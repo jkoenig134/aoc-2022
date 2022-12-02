@@ -28,3 +28,11 @@ extension FlipListOfLists<T> on List<List<T>> {
     return flipped;
   }
 }
+
+extension SortInplace<T> on List<T> {
+  List<T> sortInplace([int Function(T, T)? compare]) {
+    sort(compare);
+
+    return this;
+  }
+}
