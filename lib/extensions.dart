@@ -1,6 +1,9 @@
 extension Windowed<T> on List<T> {
   List<List<T>> windowed(int size) =>
       [for (int i = 0; i <= length - size; i++) sublist(i, i + size)];
+
+  List<List<T>> windowedExclusive(int size) =>
+      [for (int i = 0; i <= length - size; i += size) sublist(i, i + size)];
 }
 
 extension Sum on Iterable<int> {
