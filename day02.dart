@@ -1,4 +1,4 @@
-import './lib/input_reader.dart';
+import 'package:aoc2022/lib.dart';
 
 main(List<String> args) =>
     InputReader.runSolutions((i) => i.asString(), part1, part2);

@@ -1,4 +1,4 @@
-import './lib/input_reader.dart';
+import 'package:aoc2022/lib.dart';
 
 class CleaningSection {
   final int leftBound;
