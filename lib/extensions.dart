@@ -10,11 +10,17 @@ extension Sum on Iterable<int> {
   int get sum => reduce((a, b) => a + b);
 }
 
-extension LengthLog<T> on Iterable<T> {
-  int get lengthLog {
+extension IterableLogging<T> on Iterable<T> {
+  Iterable<T> get logIterable {
     forEach(print);
+    return this;
+  }
+}
 
-    return length;
+extension Logging<T> on T {
+  T get log {
+    print(this);
+    return this;
   }
 }
 
