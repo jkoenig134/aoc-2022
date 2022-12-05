@@ -14,3 +14,9 @@ Advent of Code is a series of daily [programming puzzles](https://adventofcode.c
 > example for day 1:
 >
 > `dart run day01.dart`
+
+## quickstart for a new day
+
+- (once) create a new file `_archive/cookie.secret` and save your session cookie in it => `session=...`
+- run `dart run _archive/daily_setup.dart` to generate the input and code files for the current day
+- run `dart run _archive/daily_setup.dart <day>` to generate the input and code files for a specific day in the past (e.g. replace `<day>` with `5`)
