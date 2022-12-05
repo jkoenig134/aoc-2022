@@ -5,7 +5,15 @@ import 'package:http/http.dart' as http;
 void main(List<String> args) async {
   final day = args.isNotEmpty ? int.parse(args.last) : DateTime.now().day;
   final dayAsString = day.toString().padLeft(2, "0");
-  await Process.run("code", ["day$dayAsString.dart"]);
+
+  final codeFilePath = "day$dayAsString.dart";
+  final codeFile = File(codeFilePath);
+  if (!codeFile.existsSync()) {
+    final content = File("_archive/template.dart").readAsStringSync();
+    codeFile.writeAsStringSync(content);
+  }
+
+  await Process.run("code", [codeFilePath]);
   await Process.run("code", ["input/$day.test.txt"]);
   await Process.run("code", ["input/$day.txt"]);
 
