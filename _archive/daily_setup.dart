@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
-void main() async {
-  final day = DateTime.now().day;
+void main(List<String> args) async {
+  final day = args.isNotEmpty ? int.parse(args.last) : DateTime.now().day;
   final dayAsString = day.toString().padLeft(2, "0");
   await Process.run("code", ["day$dayAsString.dart"]);
   await Process.run("code", ["input/$day.test.txt"]);
