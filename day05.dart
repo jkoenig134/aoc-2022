@@ -1,29 +1,26 @@
 import './lib/input_reader.dart';
 
 class StackField {
-  final List<List<String>> stacks = [];
+  final List<List<String>> stacks;
   final List<Instruction> instructions;
 
-  StackField(this.instructions);
+  StackField(this.instructions, this.stacks);
 
   factory StackField.fromString(String string) {
     final split = string.split("\n\n");
 
-    final field =
-        StackField(split[1].split("\n").map(Instruction.fromString).toList());
+    final stacks = split[0].split("\n").reversed.toList();
+    final stackCount = stacks.first.split("").where((e) => e != " ").length;
 
-    final stacksString = split[0].split("\n").reversed.toList();
+    final instructions = split[1].split("\n").map(Instruction.from).toList();
 
-    final numberOfStacks =
-        stacksString.first.split("").where((element) => element != " ").length;
+    final field = StackField(
+      instructions,
+      List.generate(stackCount, (_) => <String>[]),
+    );
 
-    for (var i = 0; i < numberOfStacks; i++) {
-      field.stacks.add([]);
-    }
-
-    final lines = stacksString.sublist(1).toList();
-    for (var line in lines) {
-      for (var i = 0; i < numberOfStacks; i++) {
+    for (var line in stacks.skip(1)) {
+      for (var i = 0; i < stackCount; i++) {
         final value = line[1 + (i * 4)];
         if (value != " ") {
           field.stacks[i].add(value);
@@ -34,27 +31,30 @@ class StackField {
     return field;
   }
 
-  void part1() {
+  StackField runInstructionsAsCrateMover9000() {
     for (var instruction in instructions) {
       for (var i = 0; i < instruction.count; i++) {
-        final item = stacks[instruction.from - 1].removeLast();
-        stacks[instruction.to - 1].add(item);
+        final item = stacks[instruction.from].removeLast();
+        stacks[instruction.to].add(item);
       }
     }
+
+    return this;
   }
 
-  void part2() {
+  StackField runInstructionsAsCrateMover9001() {
     for (var instruction in instructions) {
-      final old = stacks[instruction.from - 1];
+      final old = stacks[instruction.from];
 
-      stacks[instruction.to - 1]
+      stacks[instruction.to]
           .addAll(old.sublist(old.length - instruction.count));
-      stacks[instruction.from - 1] =
-          old.sublist(0, old.length - instruction.count);
+      stacks[instruction.from] = old.sublist(0, old.length - instruction.count);
     }
+
+    return this;
   }
 
-  String messageOnTop() => stacks.map((e) => e.last).join();
+  String generateMessageOnTop() => stacks.map((e) => e.last).join();
 }
 
 class Instruction {
@@ -62,17 +62,10 @@ class Instruction {
   final int from;
   final int to;
 
-  Instruction(this.count, this.from, this.to);
-
-  Instruction.fromString(String string)
+  Instruction.from(String string)
       : count = int.parse(string.split(" ")[1]),
-        from = int.parse(string.split(" ")[3]),
-        to = int.parse(string.split(" ")[5]);
-
-  @override
-  String toString() {
-    return "count: $count, from: $from, to: $to";
-  }
+        from = int.parse(string.split(" ")[3]) - 1,
+        to = int.parse(string.split(" ")[5]) - 1;
 }
 
 main(List<String> args) => InputReader.runSolutions(
@@ -81,14 +74,10 @@ main(List<String> args) => InputReader.runSolutions(
       part2,
     );
 
-String part1(String input) {
-  final stackField = StackField.fromString(input);
-  stackField.part1();
-  return stackField.messageOnTop();
-}
+String part1(String input) => StackField.fromString(input)
+    .runInstructionsAsCrateMover9000()
+    .generateMessageOnTop();
 
-String part2(String input) {
-  final stackField = StackField.fromString(input);
-  stackField.part2();
-  return stackField.messageOnTop();
-}
+String part2(String input) => StackField.fromString(input)
+    .runInstructionsAsCrateMover9001()
+    .generateMessageOnTop();
