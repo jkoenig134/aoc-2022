@@ -27,8 +27,8 @@ class InputReader {
 
   static void runSolutions<T>(
     T Function(InputReader) parse,
-    int Function(T) part1Fn,
-    int Function(T) part2Fn,
+    dynamic Function(T) part1Fn,
+    dynamic Function(T) part2Fn,
   ) {
     final day = _dayFromProcessArgv();
 
