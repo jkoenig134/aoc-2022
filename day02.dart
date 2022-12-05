@@ -1,7 +1,6 @@
 import 'package:aoc2022/lib.dart';
 
-main(List<String> args) =>
-    InputReader.runSolutions((i) => i.asString(), part1, part2);
+main(List<String> args) => runSolutions((i) => i.asString(), part1, part2);
 
 enum RPS {
   rock(1),

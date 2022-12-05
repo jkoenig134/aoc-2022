@@ -17,36 +17,11 @@ class InputReader {
   List<String> asNewlineString() =>
       _input.split("\n\n").map((e) => e.replaceAll("\n", " ")).toList();
 
-  List<List<String>> asStringList() =>
-      _input.split("\n").map((e) => e.split("")).toList();
+  List<List<String>> asStringList({firstSplit = "\n", secondSplit = ""}) =>
+      _input.split(firstSplit).map((e) => e.split(secondSplit)).toList();
 
   List<List<int>> asIntList({firstSplit = "\n", secondSplit = ""}) => _input
       .split(firstSplit)
       .map((e) => e.split(secondSplit).map(int.parse).toList())
       .toList();
-
-  static void runSolutions<T>(
-    T Function(InputReader) parse,
-    dynamic Function(T) part1Fn,
-    dynamic Function(T) part2Fn,
-  ) {
-    final day = _dayFromProcessArgv();
-
-    final testInput = parse(InputReader.test(day));
-    print("""Test
-  (1) ${part1Fn(testInput)}
-  (2) ${part2Fn(testInput)}
-  """);
-
-    final input = parse(InputReader(day));
-    print("""Real
-  (1) ${part1Fn(input)}
-  (2) ${part2Fn(input)}
-  """);
-  }
-
-  static int _dayFromProcessArgv() {
-    final dayArgument = Platform.script.pathSegments.last;
-    return int.parse(dayArgument.substring(3, 5));
-  }
 }

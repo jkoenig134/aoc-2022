@@ -19,7 +19,7 @@ class CleaningSection {
       (other.leftBound >= leftBound && other.leftBound <= rightBound);
 }
 
-main(List<String> args) => InputReader.runSolutions(
+main(List<String> args) => runSolutions(
       (i) => i
           .asString()
           .map((e) => e.split(",").map(CleaningSection.fromString).toList())

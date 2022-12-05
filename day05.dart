@@ -68,7 +68,7 @@ class Instruction {
         to = int.parse(string.split(" ")[5]) - 1;
 }
 
-main(List<String> args) => InputReader.runSolutions(
+main(List<String> args) => runSolutions(
       (i) => i.raw(),
       part1,
       part2,
