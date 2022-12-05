@@ -1,13 +1,7 @@
 import './lib/input_reader.dart';
 
-main(List<String> args) {
-  InputReader.runSolutions(
-    2,
-    (i) => i.asString(),
-    part1,
-    part2,
-  );
-}
+main(List<String> args) =>
+    InputReader.runSolutions((i) => i.asString(), part1, part2);
 
 enum RPS {
   rock(1),

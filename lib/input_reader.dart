@@ -26,11 +26,12 @@ class InputReader {
       .toList();
 
   static void runSolutions<T>(
-    int day,
     T Function(InputReader) parse,
     int Function(T) part1Fn,
     int Function(T) part2Fn,
   ) {
+    final day = _dayFromProcessArgv();
+
     final testInput = parse(InputReader.test(day));
     print("""Test
   (1) ${part1Fn(testInput)}
@@ -42,5 +43,10 @@ class InputReader {
   (1) ${part1Fn(input)}
   (2) ${part2Fn(input)}
   """);
+  }
+
+  static int _dayFromProcessArgv() {
+    final dayArgument = Platform.script.pathSegments.last;
+    return int.parse(dayArgument.substring(3, 5));
   }
 }

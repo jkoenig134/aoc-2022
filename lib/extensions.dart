@@ -4,7 +4,7 @@ extension Windowed<T> on List<T> {
 }
 
 extension Sum on Iterable<int> {
-  int get sum => fold(0, (a, b) => a + b);
+  int get sum => reduce((a, b) => a + b);
 }
 
 extension BinaryToDecimal on String {
