@@ -10,6 +10,14 @@ extension Sum on Iterable<int> {
   int get sum => reduce((a, b) => a + b);
 }
 
+extension LengthLog<T> on Iterable<T> {
+  int get lengthLog {
+    forEach(print);
+
+    return length;
+  }
+}
+
 extension BinaryToDecimal on String {
   int get binaryToDecimal => int.parse(this, radix: 2);
 }
