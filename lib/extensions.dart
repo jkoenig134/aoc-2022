@@ -45,3 +45,7 @@ extension FlipListOfLists<T> on List<List<T>> {
     return flipped;
   }
 }
+
+extension AllItemsUnique<T> on List<T> {
+  bool get allItemsUnique => toSet().length == length;
+}
