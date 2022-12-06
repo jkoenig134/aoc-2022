@@ -12,7 +12,7 @@ class StackField {
     final stacks = split[0].split("\n").reversed.toList();
     final stackCount = stacks.first.split("").where((e) => e != " ").length;
 
-    final instructions = split[1].split("\n").map(Instruction.from).toList();
+    final instructions = split[1].split("\n").mapL(Instruction.from);
 
     final field = StackField(
       instructions,

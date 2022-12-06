@@ -22,8 +22,7 @@ class CleaningSection {
 main(List<String> args) => runSolutions(
       (i) => i
           .asString()
-          .map((e) => e.split(",").map(CleaningSection.fromString).toList())
-          .toList(),
+          .mapL((e) => e.split(",").mapL(CleaningSection.fromString)),
       part1,
       part2,
     );

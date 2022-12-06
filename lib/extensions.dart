@@ -10,6 +10,10 @@ extension Sum on Iterable<int> {
   int get sum => reduce((a, b) => a + b);
 }
 
+extension MapToList<E> on Iterable<E> {
+  List<T> mapL<T>(T Function(E e) toElement) => map(toElement).toList();
+}
+
 extension IterableLogging<T> on Iterable<T> {
   Iterable<T> get logIterable {
     forEach(print);

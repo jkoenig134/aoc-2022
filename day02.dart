@@ -1,6 +1,10 @@
 import 'package:aoc2022/lib.dart';
 
-main(List<String> args) => runSolutions((i) => i.asString(), part1, part2);
+main(List<String> args) => runSolutions(
+      (i) => i.asString().mapL((e) => RPSGame.fromString(e)),
+      part1,
+      part2,
+    );
 
 enum RPS {
   rock(1),
@@ -10,39 +14,18 @@ enum RPS {
   const RPS(this.value);
   final int value;
 
-  int scoreAgainst(RPS other) {
-    // draw
-    if (value == other.value) return 3 + value;
-
-    // win
-    if ((this == RPS.rock && other == RPS.scissors) ||
-        (this == RPS.paper && other == RPS.rock) ||
-        (this == RPS.scissors && other == RPS.paper)) return 6 + value;
-
-    // loose
-    return value;
+  RPS get beats {
+    switch (this) {
+      case RPS.paper:
+        return RPS.rock;
+      case RPS.scissors:
+        return RPS.paper;
+      case RPS.rock:
+        return RPS.scissors;
+    }
   }
 
-  int scoreAgainstWithWinCondition(String other) {
-    // loose
-    if (other == "X") {
-      if (this == RPS.rock) return RPS.scissors.scoreAgainst(this);
-      if (this == RPS.paper) return RPS.rock.scoreAgainst(this);
-      if (this == RPS.scissors) return RPS.paper.scoreAgainst(this);
-    }
-
-    // draw
-    if (other == "Y") return scoreAgainst(this);
-
-    // win
-    if (other == "Z") {
-      if (this == RPS.rock) return RPS.paper.scoreAgainst(this);
-      if (this == RPS.paper) return RPS.scissors.scoreAgainst(this);
-      if (this == RPS.scissors) return RPS.rock.scoreAgainst(this);
-    }
-
-    return 0;
-  }
+  RPS get isBeatenBy => beats.beats;
 
   static RPS fromString(String s) {
     switch (s) {
@@ -61,21 +44,40 @@ enum RPS {
   }
 }
 
-int part1(List<String> input) {
-  final games = input
-      .map((e) => e.split(" ").map((e) => RPS.fromString(e)).toList())
-      .toList();
+class RPSGame {
+  final RPS opponent;
+  final String ownMove;
 
-  final scores = games.map((e) => e[1].scoreAgainst(e[0]));
+  RPSGame(this.opponent, this.ownMove);
+  factory RPSGame.fromString(String s) => RPSGame(RPS.fromString(s[0]), s[2]);
 
-  return scores.reduce((value, element) => value + element);
+  int _calculateScore(RPS self, RPS other) {
+    if (self.value == other.value) return 3 + self.value;
+    if (other == self.beats) return 6 + self.value;
+    return self.value;
+  }
+
+  int scoreAgainstWithOwnMoveFromString() => _calculateScore(
+        RPS.fromString(ownMove),
+        opponent,
+      );
+
+  int scoreAgainstWithWinCondition() {
+    switch (ownMove) {
+      case "X":
+        return _calculateScore(opponent.beats, opponent);
+      case "Y":
+        return _calculateScore(opponent, opponent);
+      case "Z":
+        return _calculateScore(opponent.isBeatenBy, opponent);
+      default:
+        throw Exception("Unknown win condition: $ownMove");
+    }
+  }
 }
 
-int part2(List<String> input) {
-  final games = input.map((e) => e.split(" ").toList()).toList();
+int part1(List<RPSGame> input) =>
+    input.map((e) => e.scoreAgainstWithOwnMoveFromString()).sum;
 
-  final scores =
-      games.map((e) => RPS.fromString(e[0]).scoreAgainstWithWinCondition(e[1]));
-
-  return scores.reduce((value, element) => value + element);
-}
+int part2(List<RPSGame> input) =>
+    input.map((e) => e.scoreAgainstWithWinCondition()).sum;
