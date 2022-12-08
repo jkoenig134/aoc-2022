@@ -6,29 +6,29 @@ enum Direction { left, right, up, down }
 
 class Tree {
   final int hight;
+  final int x;
+  final int y;
   bool visible = false;
 
-  Tree(this.hight);
+  Tree(this.hight, this.x, this.y);
 
-  int _scenicScore(int y, int x, List<List<Tree>> input, Direction direction) {
+  int _scenicScore(List<List<Tree>> input, Direction direction) {
     var score = 0;
 
     final isOnX = direction == Direction.left || direction == Direction.right;
 
     while (true) {
       final valueToAlter = isOnX ? x : y;
-      final valueToCheck =
-          direction == Direction.left || direction == Direction.up
-              ? (valueToAlter - score - 1)
-              : (valueToAlter + score + 1);
+      final position = direction == Direction.left || direction == Direction.up
+          ? (valueToAlter - score - 1)
+          : (valueToAlter + score + 1);
 
-      if (valueToCheck > input.length - 1 || valueToCheck < 0) {
+      if (position > input.length - 1 || position < 0) {
         break;
       }
 
       score++;
-      final value =
-          isOnX ? input[y][valueToCheck].hight : input[valueToCheck][x].hight;
+      final value = isOnX ? input[y][position].hight : input[position][x].hight;
       if (value >= hight) {
         break;
       }
@@ -37,13 +37,15 @@ class Tree {
     return score;
   }
 
-  int scenicScore(int y, int x, List<List<Tree>> input) => Direction.values
-      .map((e) => _scenicScore(y, x, input, e))
+  int scenicScore(List<List<Tree>> input) => Direction.values
+      .map((e) => _scenicScore(input, e))
       .reduce((a, b) => a * b);
 }
 
 main(List<String> args) => runSolutions(
-      (i) => i.asStringList().mapL((e) => e.mapL((e) => Tree(int.parse(e)))),
+      (i) => i.asStringList().mapIndexed(
+            (e, y) => e.mapIndexed((e, x) => Tree(int.parse(e), x, y)),
+          ),
       part1,
       part2,
     );
@@ -74,6 +76,6 @@ int part1(List<List<Tree>> input) {
 }
 
 int part2(List<List<Tree>> input) => input
-    .mapIndexed((e, y) => e.mapIndexed((e, x) => e.scenicScore(y, x, input)))
+    .map((e) => e.map((e) => e.scenicScore(input)))
     .expand((element) => element)
     .reduce(max);
