@@ -5,12 +5,12 @@ import 'package:aoc2022/lib.dart';
 enum Direction { left, right, up, down }
 
 class Tree {
-  final int hight;
+  final int height;
   final int x;
   final int y;
   bool visible = false;
 
-  Tree(this.hight, this.x, this.y);
+  Tree(this.height, this.x, this.y);
 
   int _scenicScore(List<List<Tree>> input, Direction direction) {
     var score = 0;
@@ -28,8 +28,9 @@ class Tree {
       }
 
       score++;
-      final value = isOnX ? input[y][position].hight : input[position][x].hight;
-      if (value >= hight) {
+      final value =
+          isOnX ? input[y][position].height : input[position][x].height;
+      if (value >= height) {
         break;
       }
     }
@@ -52,13 +53,13 @@ main(List<String> args) => runSolutions(
 
 void markVisible(List<List<Tree>> input) {
   for (var row in input) {
-    var lastHight = row[0].hight;
+    var lastHeight = row[0].height;
     row[0].visible = true;
 
     for (var tree in row.skip(1)) {
-      if (tree.hight > lastHight) {
+      if (tree.height > lastHeight) {
         tree.visible = true;
-        lastHight = tree.hight;
+        lastHeight = tree.height;
       }
     }
   }
