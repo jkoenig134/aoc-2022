@@ -14,6 +14,18 @@ extension MapToList<E> on Iterable<E> {
   List<T> mapL<T>(T Function(E e) toElement) => map(toElement).toList();
 }
 
+extension MapIndexed<E> on List<E> {
+  List<T> mapIndexed<T>(T Function(E e, int index) toElement) => asMap()
+      .map(
+        (index, row) => MapEntry(
+          index,
+          toElement(row, index),
+        ),
+      )
+      .values
+      .toList();
+}
+
 extension IterableLogging<T> on Iterable<T> {
   Iterable<T> get logIterable {
     forEach(print);
