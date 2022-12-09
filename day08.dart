@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:aoc2022/lib.dart';
 
-enum Direction { left, right, up, down }
-
 class Tree {
   final int height;
   final int x;
