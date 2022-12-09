@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'enums.dart';
+
 extension Windowed<T> on List<T> {
   List<List<T>> windowed(int size) =>
       [for (int i = 0; i <= length - size; i++) sublist(i, i + size)];
@@ -64,4 +68,19 @@ extension FlipListOfLists<T> on List<List<T>> {
 
 extension AllItemsUnique<T> on List<T> {
   bool get allItemsUnique => toSet().length == length;
+}
+
+extension ApplyDirection on Point<int> {
+  Point<int> moveInDirection(Direction direction, [int distance = 1]) {
+    switch (direction) {
+      case Direction.up:
+        return Point(x, y - distance);
+      case Direction.down:
+        return Point(x, y + distance);
+      case Direction.left:
+        return Point(x - distance, y);
+      case Direction.right:
+        return Point(x + distance, y);
+    }
+  }
 }
