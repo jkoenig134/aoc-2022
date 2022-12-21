@@ -68,11 +68,7 @@ class Elephant {
 }
 
 int part1(List<Elephant> input) {
-  final mapOfElephants = <String, Elephant>{};
-  input.forEach((element) {
-    mapOfElephants[element.name] = element;
-  });
-
+  final mapOfElephants = {for (var e in input) e.name: e};
   while (!mapOfElephants["root"]!.isCalculated) {
     mapOfElephants.values.forEach((element) {
       element.calculate(mapOfElephants);
